@@ -24,7 +24,7 @@ docker run --name movies-app -p 3000:3000 \
   -e API_URL="http://host.docker.internal:8000/api/v1" \
   -e USER_EMAIL="your_email@example.com" \
   -e USER_PASSWORD="your_secure_password" \
-  your-super-account/movies
+  nazarpetrenko/movies
 ```
 
 🔐 If the user doesn’t exist, it will be registered automatically.

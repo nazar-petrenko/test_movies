@@ -93,7 +93,7 @@ docker run --rm -p 3000:3000 \
   your_super_account/movies
 
 ## 📁 Project Structure
-
+```
 .
 ├── Dockerfile                        # Docker build instructions
 ├── entrypoint.sh                     # Startup script: generates token + env-config.js
@@ -128,6 +128,7 @@ docker run --rm -p 3000:3000 \
 │   │   └── movies/
 │   │       └── moviesSlice.js       # Redux movies slice
 └── index.html                        # Injected with <script src="/env-config.js">
+```
 
 ## 📄 API Documentation
     Backend image: webbylabhub/movies

@@ -139,8 +139,9 @@ docker run --rm -p 3000:3000 \
     API docs: https://documenter.getpostman.com/view/356840/TzkyLeVK
 
 ## ✅ Task Requirements Coverage
+```
   *React SPA*
-  **Redux Toolkit*
+  *Redux Toolkit*
   *Vite*
   *SCSS styling*
   *Works with official backend image*
@@ -149,3 +150,4 @@ docker run --rm -p 3000:3000 \
   *One-liner Docker run*
   *Token auto-generation*
   *README with setup instructions*
+```

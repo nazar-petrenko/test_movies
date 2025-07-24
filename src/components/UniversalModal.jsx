@@ -18,11 +18,26 @@ const UniversalModal = () => {
   return (
     <div className="modal-backdrop">
       <div className="modal">
-        <h3>{modal.title}</h3>
-        <p>{modal.message}</p>
-        <div className="modal-buttons">
-          <button onClick={handleConfirm}>{modal.confirmText}</button>
-          <button onClick={() => dispatch(hideModal())}>{modal.cancelText}</button>
+        <div className="modal-header">
+          <h3>{modal.title || 'Підтвердіть дію'}</h3>
+        </div>
+        
+        <p>{modal.message || 'Ви впевнені?'}</p>
+
+        <div className="modal-actions">
+          <button 
+            onClick={() => dispatch(hideModal())} 
+            className="btn btn-secondary"
+          >
+            {modal.cancelText || 'Скасувати'}
+          </button>
+          <button 
+            onClick={handleConfirm} 
+            className="btn btn-primary"
+            style={{ backgroundColor: 'var(--error)', borderColor: 'var(--error)' }}
+          >
+            {modal.confirmText || 'Видалити'}
+          </button>
         </div>
       </div>
     </div>

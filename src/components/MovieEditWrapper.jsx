@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieById } from '../services/api';
-import MovieEdit from './MovieEdit';
+import MovieEdit from '../pages/MovieEdit';
 
 const MovieEditWrapper = () => {
   const { id } = useParams();

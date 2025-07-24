@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MovieList from './components/MovieList';
-import MovieDetails from './components/MovieDetails';
+import MovieList from './pages/MovieList';
+import MovieDetails from './pages/MovieDetails';
 import MovieEditWrapper from './components/MovieEditWrapper';
 import AddMoviePage from './pages/AddMoviePage';
 import UniversalModal from './components/UniversalModal'; 

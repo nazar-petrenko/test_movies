@@ -1,17 +1,21 @@
 import axios from 'axios';
-
-const API_URL = import.meta.env.VITE_API_URL;
-const AUTH_TOKEN = import.meta.env.VITE_AUTH_TOKEN;
+import appConfig from '../config';
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: appConfig.apiUrl,
 });
 
+api.interceptors.request.use((requestConfig) => {
 
-api.interceptors.request.use((config) => {
-  config.headers.Authorization = AUTH_TOKEN; 
-  return config;
+
+  if (appConfig.authToken) {
+
+    requestConfig.headers.Authorization = appConfig.authToken;
+  }
+
+  return requestConfig;
 });
+
 export const getAllMovies = (params) => api.get('/movies', { params });
 export const deleteMovie = (id) => api.delete(`/movies/${id}/`);
 export const getMovieById = (id) => api.get(`/movies/${id}/`);

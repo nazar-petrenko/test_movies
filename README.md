@@ -1,77 +1,146 @@
-# Test Movies App
+# 🎬 Movies App (React + Vite + Docker)
 
-This is a Single Page Application (SPA) for managing a movie collection.  
-Built using **React + Vite**, with **CSS/SCSS**, and **JavaScript**.  
-The backend API is provided via a prebuilt Docker image: [`webbylabhub/movies`](https://hub.docker.com/r/webbylabhub/movies).
+A single-page application (SPA) built with **React**, **Vite**, **SCSS**, and **Redux Toolkit** for managing a movie collection.  
+This app is designed to work with the official WebbyLab backend API image:  
+👉 [`webbylabhub/movies`](https://hub.docker.com/r/webbylabhub/movies)
 
----
+## 🚀 Features
 
-## Tech Stack
+- View movies
+- Add / delete / search movies
+- Sort movies by title
+- Search by actor
+- Import from `.txt` file via upload
+- Auth/login automatically via ENV credentials
+- Dynamic runtime config via `env-config.js`
 
-- React (with Vite)
-- Redux Toolkit
-- JavaScript
-- CSS / SCSS
-- Docker (for backend and production deployment)
 
----
+## 🐳 Run with Docker (recommended)
 
-## Getting Started (Local Development)
+Run the app in **a single line**, with API and user credentials passed via environment variables:
 
-### 1. Clone the repository
+```bash
+docker run --name movies-app -p 3000:3000 \
+  -e API_URL="http://host.docker.internal:8000/api/v1" \
+  -e USER_EMAIL="your_email@example.com" \
+  -e USER_PASSWORD="your_secure_password" \
+  nazarpetrenko/movies
+```
 
-git clone https://github.com/nazar-petrenko/test_movies.git
+🔐 If the user doesn’t exist, it will be registered automatically.
+The generated token will be injected into window.AUTH_TOKEN.
 
-### 2. Install dependencies
-bash
-npm install
+## 🌍 Access
 
-### 3. Create .env file
-Create a .env file in the root of the project with the following content:
+After startup, open your browser at:
 
-VITE_API_URL=http://localhost:8000/api/v1
-VITE_USER_EMAIL=test@example.com
-VITE_USER_PASSWORD=123456
+http://localhost:3000
 
-Replace values if needed.
+## ⚙️ Configuration
 
-### Running the Backend API via Docker
-You can run the backend API with this command:
-
-docker run --name movies-api -p 8000:8000 webbylabhub/movies
-The API will be available at: http://localhost:8000/api/v1
-
-Running the Frontend (Development Mode)
-
-npm run dev
-Then open your browser at http://localhost:5173
-
-If the port is different, Vite will show it in the terminal.
-
-Environment Variables
+All configuration is handled via environment variables:
 Variable	Description
-VITE_API_URL	URL to the backend API (/api/v1)
-VITE_USER_EMAIL	Email used for login
-VITE_USER_PASSWORD	Password used for login
+API_URL	Backend API base URL (e.g. http://host.docker.internal:8000/api/v1)
+USER_EMAIL	Email used to login/register user
+USER_PASSWORD	Password for the user
 
----
+## 🧱 Tech Stack
+  *React + Vite* 
+  *Redux Toolkit*
+  *SCSS for styling*
+  *Axios for HTTP*
+  *Node.js + Nginx in Docker*
+  *Runtime config via env-config.js*
 
-### Features
+## 🔧 Architecture Overview
 
-**Add, delete, search, and sort movies**
-**View movie details**
-**Import movies from .txt file**
-**Authenticated requests via API token**
-**Mobile-friendly layout**
+    The app is built using Vite (npm run build)
 
----
+    The Docker image includes:
+        React static files
+        Node.js runtime for token generation (generateToken.js)
+        Nginx web server
 
-## To Be Added
+    During container startup:
+        Auth token is requested via generateToken.js
+        env-config.js is generated dynamically with:
+            window.API_URL
+            window.AUTH_TOKEN
+        This config file is injected into index.html
 
-**Dockerfile for frontend**
-**Docker deployment instructions**
-**Production build setup**
-**API token auto-generation or login on start**
+## 🔁 Preventing Caching
 
----
+To avoid stale API_URL values in browsers, nginx.conf disables caching for env-config.js:
 
+location = /env-config.js {
+  add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+}
+
+This ensures changes to environment variables are always reflected.
+
+## 🧪 Manual build & run (optional)
+
+If you want to build the image manually:
+
+# 1. Build the image
+docker build -t your_super_account/movies .
+
+# 2. Run
+docker run --rm -p 3000:3000 \
+  -e API_URL=http://host.docker.internal:8000/api/v1 \
+  -e USER_EMAIL=... \
+  -e USER_PASSWORD=... \
+  your_super_account/movies
+
+## 📁 Project Structure
+
+.
+├── Dockerfile                        # Docker build instructions
+├── entrypoint.sh                     # Startup script: generates token + env-config.js
+├── nginx.conf                        # Nginx config for SPA routing and caching
+├── generateToken.js                  # Generates user token or registers new user
+├── src/
+│   ├── config.js                     # Reads window.API_URL & window.AUTH_TOKEN
+│   ├── app/
+│   │   └── store.js                  # Redux store configuration
+│   ├── main.jsx                      # React root mount point
+│   ├── App.jsx                       # Root app component
+│   ├── App.css                       
+│   ├── styles.scss                   # Global SCSS styles
+│   ├── assets/                       # Static assets
+│   ├── components/
+│   │   ├── FileUploader.jsx          # UI for uploading .txt movie files
+│   │   ├── MovieEditWrapper.jsx      # Edit logic and route handling
+│   │   ├── MovieForm.jsx             # Reusable form for adding/editing movies
+│   │   └── UniversalModal.jsx        # Generic modal component
+│   ├── pages/
+│   │   ├── AddMoviePage.jsx          # Form page to add a new movie
+│   │   ├── MovieDetails.jsx          # Single movie detail view
+│   │   ├── MovieEdit.jsx             # Movie editing page
+│   │   └── MovieList.jsx             # Main list of movies
+│   ├── utils/
+│   │   └── validateMovie.js          # Input validation logic
+│   ├── services/
+│   │   └── api.js                    # Axios instance + API helpers
+│   ├── features/
+│   │   ├── modal/
+│   │   │   └── modalSlice.js         # Redux modal slice
+│   │   └── movies/
+│   │       └── moviesSlice.js       # Redux movies slice
+└── index.html                        # Injected with <script src="/env-config.js">
+
+## 📄 API Documentation
+    Backend image: webbylabhub/movies
+    API docs: https://documenter.getpostman.com/view/356840/TzkyLeVK
+
+## ✅ Task Requirements Coverage
+  *React SPA*
+  **Redux Toolkit*
+  *Vite*
+  *SCSS styling*
+  *Works with official backend image*
+  *API URL configurable via ENV*
+  *DockerHub-published image*
+  *One-liner Docker run*
+  *Token auto-generation*
+  *README with setup instructions*

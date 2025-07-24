@@ -24,7 +24,7 @@ docker run --name movies-app -p 3000:3000 \
   -e API_URL="http://host.docker.internal:8000/api/v1" \
   -e USER_EMAIL="your_email@example.com" \
   -e USER_PASSWORD="your_secure_password" \
-  nazarpetrenko/movies
+  your-super-account/movies
 ```
 
 🔐 If the user doesn’t exist, it will be registered automatically.
@@ -72,9 +72,11 @@ USER_PASSWORD	Password for the user
 
 To avoid stale API_URL values in browsers, nginx.conf disables caching for env-config.js:
 
+```
 location = /env-config.js {
   add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
 }
+```
 
 This ensures changes to environment variables are always reflected.
 
@@ -82,15 +84,17 @@ This ensures changes to environment variables are always reflected.
 
 If you want to build the image manually:
 
-# 1. Build the image
+### 1. Build the image
 docker build -t your_super_account/movies .
 
-# 2. Run
+### 2. Run
+```
 docker run --rm -p 3000:3000 \
   -e API_URL=http://host.docker.internal:8000/api/v1 \
   -e USER_EMAIL=... \
   -e USER_PASSWORD=... \
   your_super_account/movies
+```
 
 ## 📁 Project Structure
 ```

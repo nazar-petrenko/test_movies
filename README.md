@@ -140,14 +140,14 @@ docker run --rm -p 3000:3000 \
 
 ## ✅ Task Requirements Coverage
 ```
-  *React SPA*
-  *Redux Toolkit*
-  *Vite*
-  *SCSS styling*
-  *Works with official backend image*
-  *API URL configurable via ENV*
-  *DockerHub-published image*
-  *One-liner Docker run*
-  *Token auto-generation*
-  *README with setup instructions*
+  React SPA
+  Redux Toolkit
+  Vite
+  SCSS styling
+  Works with official backend image
+  API URL configurable via ENV
+  DockerHub-published image
+  One-liner Docker run
+  Token auto-generation
+  README with setup instructions
 ```

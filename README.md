@@ -99,11 +99,12 @@ docker build -t your_super_account/movies .
 
 ### 2. Run
 ```
-docker run --rm -p 3000:3000 \
-  -e API_URL=http://host.docker.internal:8000/api/v1 \
-  -e USER_EMAIL=... \
-  -e USER_PASSWORD=... \
-  your_super_account/movies
+docker run --rm --name movies-app -p 3000:3000 \
+  --add-host=host.docker.internal:host-gateway \
+  -e API_URL="http://host.docker.internal:8000/api/v1" \
+  -e USER_EMAIL="your_email@example.com" \
+  -e USER_PASSWORD="your_password" \
+  nazarpetrenko/movies
 ```
 
 ## 📁 Project Structure

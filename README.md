@@ -15,15 +15,25 @@ This app is designed to work with the official WebbyLab backend API image:
 - Dynamic runtime config via `env-config.js`
 
 
-## 🐳 Run with Docker (recommended)
+## 🐳 How to Run (Docker)
 
-Run the app in **a single line**, with API and user credentials passed via environment variables:
+This guide provides a **universal startup command** that works across Windows, macOS (with Docker Desktop), and Linux (with Docker Engine v20.10+).
+
+### Step 1: Start the Backend Server
+First, run the provided backend image. It will be exposed on port 8000 of your local machine.
+```bash
+docker run -d --rm -p 8000:8000 webbylabhub/movies
+```
+
+### Step 2: Run the Frontend Application
+Execute the single command below. It will automatically configure network access to the backend, fetch an authentication token, and start the application.
 
 ```bash
-docker run --name movies-app -p 3000:3000 \
+docker run --rm --name movies-app -p 3000:3000 \
+  --add-host=host.docker.internal:host-gateway \
   -e API_URL="http://host.docker.internal:8000/api/v1" \
   -e USER_EMAIL="your_email@example.com" \
-  -e USER_PASSWORD="your_secure_password" \
+  -e USER_PASSWORD="your_password" \
   nazarpetrenko/movies
 ```
 
